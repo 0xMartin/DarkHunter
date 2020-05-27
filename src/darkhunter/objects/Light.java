@@ -1,0 +1,71 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package darkhunter.objects;
+
+import darkhunter.engine.EngineObject;
+import darkhunter.engine.GameMap;
+import darkhunter.engine.Texture;
+import java.awt.Point;
+import java.io.Serializable;
+
+/**
+ *
+ * @author Krcma
+ */
+public class Light implements EngineObject, Serializable {
+
+    private final double X, Y;
+    private float MAXINTENSITY, INTENSITY;
+    private final Texture texture;
+
+    public Light(double x, double y, float intensity) {
+        this.X = x;
+        this.Y = y;
+        this.MAXINTENSITY = intensity;
+        this.INTENSITY = intensity;
+        this.texture = new Texture(this.getClass().getResource("/darkhunter/src/img/light.png"), true);
+    }
+
+    @Override
+    public double[] getPosition() {
+        return new double[]{this.X, this.Y};
+    }
+
+    @Override
+    public boolean intersect(Point p) {
+        return false;
+    }
+
+    @Override
+    public boolean isDeath() {
+        return false;
+    }
+
+    public double getIntensity() {
+        return this.INTENSITY;
+    }
+
+    @Override
+    public int getWidth() {
+        return this.texture.WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.texture.HEIGHT;
+    }
+
+    @Override
+    public void refresh(GameMap gm, double oscilator) {
+        this.INTENSITY = (float) (this.MAXINTENSITY - oscilator * this.MAXINTENSITY * 0.05f);
+    }
+
+    @Override
+    public int[] getTexture() {
+        return this.texture.pixels;
+    }
+
+}
